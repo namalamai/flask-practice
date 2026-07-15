@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Lawan's Website</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=2">
+</head>
+<body>
+<div class="hero">
+    <h1>🚀 Welcome to Lawan's Website</h1>
+
+    <p>Learn Python, Flask, and Web Development with me.</p>
+
+    <a href="{{ url_for('register') }}">
+        <button>Get Started</button>
+    </a>
+</div>
+
+<hr>
+<nav>
+    <a href="{{ url_for('home') }}">Home</a>
+    <a href="{{ url_for('about') }}">About</a>
+    <a href="{{ url_for('contact') }}">Contact</a>
+    <a href="{{ url_for('login') }}">Login</a>
+    <a href="{{ url_for('register') }}">Register</a>
+</nav>
+
+
+<br>
+
+<button>Start Exploring</button>
+
+<hr>
+
+<footer>
+    <p>© 2026 Lawan's Website</p>
+    <p>Built with Python and Flask ❤️</p>
+</footer>
+
+</body>
+</html>
+<hr>
+
+<div class="container">
+
+    <h2>Our Features</h2>
+
+    <p>✅ Secure User Login</p>
+
+    <p>✅ Profile Picture Upload</p>
+
+    <p>✅ Personal Dashboard</p>
+
+    <p>✅ Responsive Website Design</p>
+
+</div>
+
+<hr>
+<div class="stats">
+
+    <div class="card">
+        <h2>100+</h2>
+        <p>Users</p>
+    </div>
+
+    <div class="card">
+        <h2>20+</h2>
+        <p>Projects</p>
+    </div>
+
+    <div class="card">
+        <h2>24/7</h2>
+        <p>Support</p>
+    </div>
+
+</div>

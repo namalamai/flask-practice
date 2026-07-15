@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="dashboard-card">
+
+<h1>Welcome, {{ user }}! 🎉</h1>
+<p><strong>Current Date & Time:</strong> {{ current_time }}</p>
+<p>You are logged in successfully.</p>
+
+<h3>Your Profile Picture</h3>
+<hr>
+
+<div class="stats">
+
+    <div class="dashboard-card">
+        <h2>{{ total_users }}</h2>
+        <p>Total Users</p>
+    </div>
+
+    <div class="dashboard-card">
+        <h2>{{ total_messages }}</h2>
+        <p>Total Messages</p>
+    </div>
+
+</div>
+<img src="{{ url_for('static', filename='uploads/' + picture) }}"
+     width="150"
+     height="150"
+     alt="Profile Picture">
+
+<br><br>
+<form action="/upload" method="POST" enctype="multipart/form-data">
+    <input type="file" name="photo" required>
+    <br><br>
+    <button type="submit">Upload Picture</button>
+</form>
+
+<br>
+
+<a href="/logout">Logout</a>
+</div>
+</body>
+</html>
+
+<hr>
+
+<a href="{{ url_for('home') }}">Home</a> |
+<a href="{{ url_for('profile') }}">Profile</a> |
+<a href="{{ url_for('users') }}">Users</a> |
+<a href="{{ url_for('messages') }}">Messages</a> |
+<a href="{{ url_for('logout') }}">Logout</a>

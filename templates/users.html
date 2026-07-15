@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Users</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=2">
+</head>
+<body>
+
+<nav>
+    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('messages') }}">Messages</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
+</nav>
+
+<div class="container">
+    <h1>Registered Users</h1>
+<form method="GET">
+    <input 
+        type="text" 
+        name="search" 
+        placeholder="Search username..."
+        value="{{ search }}"
+    >
+
+    <button type="submit">Search</button>
+</form>
+    <table border="1" cellpadding="10">
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Profile Picture</th>
+<th>Action</th>
+        </tr>
+
+        {% for user in users %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.username }}</td>
+            <td>
+                <img src="{{ url_for('static', filename='uploads/' + user.profile_picture) }}"
+                     width="60">
+            </td><td>
+    <a href="{{ url_for('delete_user', id=user.id) }}">
+        <button>Delete</button>
+    </a>
+</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+</div>
+
+</body>
+</html>

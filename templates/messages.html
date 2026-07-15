@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Messages</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=2">
+</head>
+<body>
+
+<nav>
+    <a href="{{ url_for('home') }}">Home</a>
+    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('contact') }}">Contact</a>
+</nav>
+
+<div class="container">
+    <h1>Contact Messages</h1>
+
+    <table border="1" cellpadding="10">
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Message</th>
+<th>Action</th>
+        </tr>
+
+        {% for message in messages %}
+        <tr>
+            <td>{{ message.name }}</td>
+            <td>{{ message.email }}</td>
+            <td>{{ message.message }}</td>
+        </tr><td>
+    <a href="{{ url_for('delete_message', id=message.id) }}">
+        <button>Delete</button>
+    </a>
+</td>
+        {% endfor %}
+    </table>
+
+</div>
+
+</body>
+</html>
