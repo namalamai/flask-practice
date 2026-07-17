@@ -13,21 +13,63 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
 # ---------------- DATABASE ----------------
+# ---------------- DATABASE ----------------
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
     profile_picture = db.Column(db.String(200), default="default.png")
+    posts = db.relationship("Post", backref="user", lazy=True)
+
+    comments = db.relationship(
+        "Comment",
+        backref="user",
+        lazy=True
+    )
+
+    likes = db.relationship(
+        "Like",
+        backref="user",
+        lazy=True
+    )
+
 class ContactMessage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(120), nullable=False)
     message = db.Column(db.Text, nullable=False)
-with app.app_context():
-    db.create_all()
 
-# ---------------- HOME ----------------
+
+class Post(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.Text, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    comments = db.relationship(
+        "Comment",
+        backref="post",
+        lazy=True,
+        cascade="all, delete-orphan"
+    )
+
+    likes = db.relationship(
+        "Like",
+        backref="post",
+        lazy=True,
+        cascade="all, delete-orphan"
+    )
+
+class Comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.Text, nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey("post.id"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+
+
+class Like(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    post_id = db.Column(db.Integer, db.ForeignKey("post.id"), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
 
 @app.route("/")
 def home():
@@ -134,7 +176,81 @@ def profile():
 
     user = User.query.filter_by(username=session["user"]).first()
     return render_template("profile.html", user=user.username, picture=user.profile_picture)
+@app.route("/posts", methods=["GET", "POST"])
+def posts():
+    if "user" not in session:
+        return redirect(url_for("login"))
 
+    if request.method == "POST":
+        content = request.form["content"]
+
+        user = User.query.filter_by(username=session["user"]).first()
+
+        new_post = Post(
+            content=content,
+            user_id=user.id
+        )
+
+        db.session.add(new_post)
+        db.session.commit()
+
+    all_posts = Post.query.all()
+
+    return render_template("posts.html", posts=all_posts)
+
+@app.route("/comment/<int:post_id>", methods=["POST"])
+def comment(post_id):
+    if "user" not in session:
+        return redirect(url_for("login"))
+
+    content = request.form["comment"]
+    user = User.query.filter_by(username=session["user"]).first()
+
+    new_comment = Comment(
+        content=content,
+        post_id=post_id,
+        user_id=user.id
+    )
+
+    db.session.add(new_comment)
+    db.session.commit()
+
+    return redirect(url_for("posts"))
+@app.route("/delete-post/<int:post_id>", methods=["POST"])
+def delete_post(post_id):
+    if "user" not in session:
+        return redirect(url_for("login"))
+
+    post = Post.query.get_or_404(post_id)
+    user = User.query.filter_by(username=session["user"]).first()
+
+    if post.user_id == user.id:
+        db.session.delete(post)
+        db.session.commit()
+
+    return redirect(url_for("posts"))
+
+@app.route("/like/<int:post_id>", methods=["POST"])
+def like(post_id):
+    if "user" not in session:
+        return redirect(url_for("login"))
+
+    user = User.query.filter_by(username=session["user"]).first()
+
+    existing_like = Like.query.filter_by(
+        post_id=post_id,
+        user_id=user.id
+    ).first()
+
+    if not existing_like:
+        new_like = Like(
+            post_id=post_id,
+            user_id=user.id
+        )
+        db.session.add(new_like)
+        db.session.commit()
+
+    return redirect(url_for("posts"))
 # ---------------- OTHER PAGES ----------------
 # ---------------- EDIT PROFILE ----------------
 
@@ -252,7 +368,22 @@ def users():
         all_users = User.query.all()
 
     return render_template("users.html", users=all_users, search=search)
+@app.route("/delete-account", methods=["POST"])
+def delete_account():
+    if "user" not in session:
+        return redirect(url_for("login"))
 
+    user = User.query.filter_by(username=session["user"]).first()
 
+    if user:
+        db.session.delete(user)
+        db.session.commit()
+
+    session.clear()
+
+    return redirect(url_for("home"))
+with app.app_context():
+    db.create_all()
 if __name__ == "__main__":
     app.run(debug=True)
+

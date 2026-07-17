@@ -2,32 +2,40 @@
 <html>
 <head>
     <title>Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
-<h1>My Profile</h1>
+<div class="container">
+    <h1>My Profile</h1>
 
-<p>Username: {{ user }}</p>
+    <img src="{{ url_for('static', filename='uploads/' + picture) }}" alt="Profile Picture" width="200">
 
-<img src="{{ url_for('static', filename='uploads/' + picture) }}" width="150">
+    <p><strong>Username:</strong> {{ user }}</p>
 
-<br><br>
+    <br>
 
-<a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+    <a href="{{ url_for('edit_profile') }}">
+        <button>Edit Profile</button>
+    </a>
 
-</body>
-</html><!DOCTYPE html>
-<html>
-<head>
-    <title>Profile</title>
-</head>
-<body>
+    <br><br>
 
-<h1>My Profile</h1>
+    <a href="{{ url_for('change_password') }}">
+        <button>Change Password</button>
+    </a>
 
-<p>Username: {{ user.username }}</p>
+    <br><br>
 
-<a href="/dashboard">Back to Dashboard</a>
+    <a href="{{ url_for('dashboard') }}">
+        <button>Back to Dashboard</button>
+    </a>
+</div>
 
 </body>
 </html>
+<br><br>
+
+<form action="{{ url_for('delete_account') }}" method="POST" onsubmit="return confirm('Are you sure you want to delete your account?');">
+    <button type="submit">Delete My Account</button>
+</form>

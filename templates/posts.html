@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Posts</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Posts</h1>
+
+    <form method="POST">
+        <textarea name="content" placeholder="Write a post..." required></textarea>
+        <br>
+        <button type="submit">Post</button>
+    </form>
+
+    <hr>
+
+    {% for post in posts %}
+
+        <h3>{{ post.user.username }}</h3>
+        <p>{{ post.content }}</p>
+<form method="POST" action="{{ url_for('delete_post', post_id=post.id) }}">
+    <button type="submit">Delete</button>
+</form>
+<h3>{{ post.user.username }}</h3>
+<p>{{ post.content }}</p>
+
+<form method="POST" action="{{ url_for('delete_post', post_id=post.id) }}">
+    <button type="submit">Delete</button>
+</form>
+
+<form method="POST" action="{{ url_for('like', post_id=post.id) }}">
+    <button type="submit">❤️ Like</button>
+</form>
+
+<p><strong>Likes:</strong> {{ post.likes|length }}</p>
+        <form method="POST" action="{{ url_for('like', post_id=post.id) }}">
+            <button type="submit">❤️ Like</button>
+        </form>
+
+        <p><strong>Likes:</strong> {{ post.likes|length }}</p>
+
+        <form method="POST" action="{{ url_for('comment', post_id=post.id) }}">
+            <input type="text" name="comment" placeholder="Write a comment..." required>
+            <button type="submit">Comment</button>
+        </form>
+
+        {% for comment in post.comments %}
+            <p><strong>{{ comment.user.username }}</strong>: {{ comment.content }}</p>
+        {% endfor %}
+
+        <hr>
+
+    {% endfor %}
+
+    <br>
+
+    <a href="{{ url_for('dashboard') }}">
+        <button>Back to Dashboard</button>
+    </a>
+
+</div>
+
+</body>
+</html>
