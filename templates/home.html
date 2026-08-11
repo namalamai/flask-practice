@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <title>Lawan's Website</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?v=2">
-</head>
+<a href="{{ url_for('notifications') }}">
+    🔔 Notifications ({{ unread_notifications }})
+</a></head>
 <body>
 <div class="hero">
     <h1>🚀 Welcome to Lawan's Website</h1>
@@ -54,7 +56,11 @@
     <p>✅ Responsive Website Design</p>
 
 </div>
-
+print("Session user_id:", session.get("user_id"))
+<form method="GET" action="/search">
+    <input type="text" name="q" placeholder="Search users..." required>
+    <button type="submit">Search</button>
+</form>
 <hr>
 <div class="stats">
 

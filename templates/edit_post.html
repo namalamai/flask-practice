@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Post</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <h1>Edit Post</h1>
+
+    <form method="POST">
+        <textarea name="content" required>{{ post.content }}</textarea>
+        <br><br>
+        <button type="submit">Save Changes</button>
+    </form>
+
+    <br>
+
+    <a href="{{ url_for('posts') }}">
+        <button>Back to Posts</button>
+    </a>
+</div>
+
+</body>
+</html>

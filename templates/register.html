@@ -1,33 +1,36 @@
-<h1>Register</h1>
-
-<form method="POST">
-    <input name="username" placeholder="Username">
-    <input name="password" type="password" placeholder="Password">
-    <button type="submit">Register</button>
-</form>
 <!DOCTYPE html>
 <html>
 <head>
     <title>Register</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Register</h1>
+
+<div class="container">
+    <h1>Create Account</h1>
 
     <form method="POST">
-        <p>
-            <input type="text" name="username" placeholder="Username" required>
-        </p>
+        <label>Username</label>
+        <input type="text" name="username" required>
 
-        <p>
-            <input type="password" name="password" placeholder="Password" required>
-        </p>
+        <label>Email</label>
+        <input type="email" name="email" required>
 
-        <p>
-            <button type="submit">Register</button>
-        </p>
+        <label>Password</label>
+        <input type="password" name="password" required>
+
+        <button type="submit">Register</button>
     </form>
 
-    <p><a href="/">Back to Home</a></p>
-    <p><a href="/login">Already have an account? Login</a></p>
+    <p style="text-align:center;">
+        Already have an account?
+        <a href="{{ url_for('login') }}">Login</a>
+    </p>
+</div>
+
+<div class="footer">
+    <p>© 2026 My Social App. All Rights Reserved.</p>
+</div>
+
 </body>
 </html>

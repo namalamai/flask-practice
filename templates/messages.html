@@ -9,10 +9,46 @@
 <nav>
     <a href="{{ url_for('home') }}">Home</a>
     <a href="{{ url_for('dashboard') }}">Dashboard</a>
-    <a href="{{ url_for('contact') }}">Contact</a>
+    <a href="{{ url_for('users') }}">Users</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
 </nav>
 
 <div class="container">
+
+{% if other_user %}
+
+    <h1>Chat with {{ other_user.username }}</h1>
+
+    <div class="messages-box">
+
+        {% for message in messages %}
+            <div class="message">
+                {% if message.sender_id == session["user_id"] %}
+                    <strong>You:</strong>
+                {% else %}
+                    <strong>{{ other_user.username }}:</strong>
+                {% endif %}
+
+                {{ message.content }}
+            </div>
+        {% else %}
+            <p>No messages yet. Start the conversation!</p>
+        {% endfor %}
+
+    </div>
+
+    <form method="POST">
+        <input
+            type="text"
+            name="content"
+            placeholder="Write a message..."
+            required
+        >
+        <button type="submit">Send</button>
+    </form>
+
+{% else %}
+
     <h1>Contact Messages</h1>
 
     <table border="1" cellpadding="10">
@@ -20,7 +56,7 @@
             <th>Name</th>
             <th>Email</th>
             <th>Message</th>
-<th>Action</th>
+            <th>Action</th>
         </tr>
 
         {% for message in messages %}
@@ -28,13 +64,16 @@
             <td>{{ message.name }}</td>
             <td>{{ message.email }}</td>
             <td>{{ message.message }}</td>
-        </tr><td>
-    <a href="{{ url_for('delete_message', id=message.id) }}">
-        <button>Delete</button>
-    </a>
-</td>
+            <td>
+                <a href="{{ url_for('delete_message', id=message.id) }}">
+                    <button type="button">Delete</button>
+                </a>
+            </td>
+        </tr>
         {% endfor %}
     </table>
+
+{% endif %}
 
 </div>
 

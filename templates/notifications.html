@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Notifications</title>
+</head>
+<body>
+
+<h2>Notifications</h2>
+
+<a href="{{ url_for('home') }}">Home</a>
+<hr>
+
+{% if notifications %}
+    {% for notification in notifications %}
+        <p>{{ notification.message }}</p>
+    {% endfor %}
+{% else %}
+    <p>No notifications yet.</p>
+{% endif %}
+
+</body>
+</html>
