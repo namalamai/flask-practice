@@ -101,15 +101,16 @@ def follow(user_id):
     follower_id = session["user_id"]
 
     if follower_id == user_id:
-        return redirect(url_for("home"))
+        return redirect(url_for("users"))
 
-    existing = Follow.query.filter_by(
+    existing_follows = Follow.query.filter_by(
         follower_id=follower_id,
         following_id=user_id
-    ).first()
+    ).all()
 
-    if existing:
-        db.session.delete(existing)
+    if existing_follows:
+        for follow_record in existing_follows:
+            db.session.delete(follow_record)
     else:
         new_follow = Follow(
             follower_id=follower_id,
@@ -119,13 +120,13 @@ def follow(user_id):
 
         notification = Notification(
             user_id=user_id,
-            message=f"Someone started following you."
+            message="Someone started following you."
         )
         db.session.add(notification)
 
     db.session.commit()
 
-    return redirect(url_for("home"))
+    return redirect(url_for("users"))
 
 
 @app.route("/")

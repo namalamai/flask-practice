@@ -8,7 +8,6 @@
 
 <nav>
     <a href="{{ url_for('dashboard') }}">Dashboard</a>
-    <a href="{{ url_for('messages') }}">Messages</a>
     <a href="{{ url_for('logout') }}">Logout</a>
 </nav>
 
@@ -60,7 +59,7 @@
                         {% endif %}
                       </form>
 
-                      <a href="{{ url_for('messages', user_id=user.id) }}">
+                      <a href="{{ url_for('private_messages', user_id=user.id) }}">
                           <button type="button">Messages</button>
                       </a>
 
