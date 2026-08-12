@@ -331,7 +331,7 @@ def edit_post(post_id):
 
     if request.method == "POST":
         post.content = request.form["content"]
-        print("POST CONTENT:", content)
+        print("POST CONTENT:", post.content)
         db.session.commit()
         return redirect(url_for("posts"))
 
