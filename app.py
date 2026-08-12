@@ -498,6 +498,25 @@ def delete_user(id):
         return redirect(url_for("login"))
 
     user = User.query.get_or_404(id)
+
+    Comment.query.filter_by(user_id=user.id).delete(synchronize_session=False)
+    Like.query.filter_by(user_id=user.id).delete(synchronize_session=False)
+    Follow.query.filter(
+        (Follow.follower_id == user.id) |
+        (Follow.following_id == user.id)
+    ).delete(synchronize_session=False)
+    Message.query.filter(
+        (Message.sender_id == user.id) |
+        (Message.receiver_id == user.id)
+    ).delete(synchronize_session=False)
+    Notification.query.filter_by(user_id=user.id).delete(
+        synchronize_session=False
+    )
+
+    Post.query.filter_by(user_id=user.id).delete(
+        synchronize_session=False
+    )
+
     db.session.delete(user)
     db.session.commit()
 
