@@ -605,6 +605,11 @@ def notifications():
         user_id=session["user_id"]
     ).order_by(Notification.id.desc()).all()
 
+    for notification in notifications:
+        notification.is_read = True
+
+    db.session.commit()
+
     return render_template(
         "notifications.html",
         notifications=notifications
