@@ -269,7 +269,35 @@ def profile():
 @app.route("/user/<int:user_id>")
 def public_profile(user_id):
     user = User.query.get_or_404(user_id)
-    return render_template("public_profile.html", user=user)
+
+    followers_count = Follow.query.filter_by(
+        following_id=user.id
+    ).count()
+
+    following_count = Follow.query.filter_by(
+        follower_id=user.id
+    ).count()
+
+    posts_count = Post.query.filter_by(
+        user_id=user.id
+    ).count()
+
+    is_following = False
+
+    if "user_id" in session:
+        is_following = Follow.query.filter_by(
+            follower_id=session["user_id"],
+            following_id=user.id
+        ).first() is not None
+
+    return render_template(
+        "public_profile.html",
+        user=user,
+        followers_count=followers_count,
+        following_count=following_count,
+        posts_count=posts_count,
+        is_following=is_following
+    )
 
 @app.route("/posts", methods=["GET", "POST"])
 def posts():

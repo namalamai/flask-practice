@@ -3,25 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>{{ user.username }} - Profile</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        .public-profile {
+            text-align: center;
+        }
+
+        .public-picture {
+            width: 160px;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid #00f2ea;
+            margin: 15px auto;
+        }
+
+        .public-username {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 10px 0 25px;
+        }
+
+        .profile-stats {
+            display: flex;
+            justify-content: space-around;
+            gap: 10px;
+            margin: 25px 0;
+        }
+
+        .stat {
+            background: #222;
+            padding: 15px 10px;
+            border-radius: 12px;
+            flex: 1;
+        }
+
+        .stat-number {
+            display: block;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #bbb;
+        }
+
+        .profile-actions a,
+        .profile-actions form {
+            display: block;
+            margin: 10px 0;
+        }
+    </style>
 </head>
 
 <body>
 
-<div class="container" style="text-align:center;">
+<div class="container public-profile">
 
-    <h1>👤 {{ user.username }}</h1>
+    <h1>👤 Profile</h1>
 
     <img
+        class="public-picture"
         src="{{ url_for('static', filename='uploads/' + user.profile_picture) }}"
         alt="{{ user.username }} profile picture"
-        width="160"
-        height="160"
-        style="border-radius:50%; object-fit:cover;"
     >
 
-    <p><strong>Username:</strong> {{ user.username }}</p>
+    <div class="public-username">
+        {{ user.username }}
+    </div>
+
+    <div class="profile-stats">
+
+        <div class="stat">
+            <span class="stat-number">{{ posts_count }}</span>
+            <span class="stat-label">Posts</span>
+        </div>
+
+        <div class="stat">
+            <span class="stat-number">{{ followers_count }}</span>
+            <span class="stat-label">Followers</span>
+        </div>
+
+        <div class="stat">
+            <span class="stat-number">{{ following_count }}</span>
+            <span class="stat-label">Following</span>
+        </div>
+
+    </div>
+
+    {% if session.get("user_id") != user.id %}
+
+        <div class="profile-actions">
+
+            <form method="POST"
+                  action="{{ url_for('follow', user_id=user.id) }}">
+
+                {% if is_following %}
+                    <button type="submit">✓ Unfollow</button>
+                {% else %}
+                    <button type="submit">➕ Follow</button>
+                {% endif %}
+
+            </form>
+
+            <a href="{{ url_for('private_messages', user_id=user.id) }}">
+                <button type="button">💬 Message</button>
+            </a>
+
+        </div>
+
+    {% endif %}
 
     <br>
 
