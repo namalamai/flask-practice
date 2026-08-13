@@ -1,40 +1,104 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Profile</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+    <style>
+        .profile-card {
+            text-align: center;
+        }
+
+        .profile-picture {
+            width: 160px;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid #00f2ea;
+            margin: 15px auto 20px;
+            display: block;
+        }
+
+        .username {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        .profile-actions {
+            margin-top: 20px;
+        }
+
+        .profile-actions a {
+            display: block;
+            margin: 12px 0;
+        }
+
+        .delete-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+        }
+
+        .delete-section button {
+            background: #d32f2f;
+        }
+
+        .delete-section button:hover {
+            background: #b71c1c;
+        }
+    </style>
 </head>
+
 <body>
 
-<div class="container">
-    <h1>My Profile</h1>
+<div class="container profile-card">
 
-    <img src="{{ url_for('static', filename='uploads/' + picture) }}" alt="Profile Picture" width="200">
+    <h1>👤 My Profile</h1>
 
-    <p><strong>Username:</strong> {{ user }}</p>
+    <img
+        class="profile-picture"
+        src="{{ url_for('static', filename='uploads/' + picture) }}"
+        alt="Profile Picture"
+    >
 
-    <br>
+    <p class="username">
+        {{ user.username }}
+    </p>
 
-    <a href="{{ url_for('edit_profile') }}">
-        <button>Edit Profile</button>
-    </a>
+    <div class="profile-actions">
 
-    <br><br>
+        <a href="{{ url_for('edit_profile') }}">
+            <button type="button">✏️ Edit Profile</button>
+        </a>
 
-    <a href="{{ url_for('change_password') }}">
-        <button>Change Password</button>
-    </a>
+        <a href="{{ url_for('change_password') }}">
+            <button type="button">🔐 Change Password</button>
+        </a>
 
-    <br><br>
+        <a href="{{ url_for('dashboard') }}">
+            <button type="button">← Back to Dashboard</button>
+        </a>
 
-    <a href="{{ url_for('dashboard') }}">
-        <button>Back to Dashboard</button>
-    </a>
-    <br><br>
+    </div>
 
-    <form action="{{ url_for('delete_account') }}" method="POST" onsubmit="return confirm('Are you sure you want to delete your account?');">
-        <button type="submit">Delete My Account</button>
-    </form>
+    <div class="delete-section">
+
+        <p>⚠️ Account Management</p>
+
+        <form
+            action="{{ url_for('delete_account') }}"
+            method="POST"
+            onsubmit="return confirm('Are you sure you want to delete your account?');"
+        >
+            <button type="submit">🗑️ Delete My Account</button>
+        </form>
+
+    </div>
 
 </div>
 
