@@ -1,98 +1,208 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
     <title>Notifications</title>
 
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='style.css') }}?v=5"
+    >
+
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f6fb;
-            margin: 0;
-            padding: 20px;
-        }
 
-        .container {
-            max-width: 600px;
-            margin: auto;
-        }
-
-        h1 {
+        .notifications-header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .notification {
-            background: white;
+            display: flex;
+            align-items: center;
+
+            background: #222;
+
             padding: 16px;
+
             margin-bottom: 12px;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+
+            border-radius: 15px;
+
+            border: 1px solid #333;
+
+            transition: 0.2s;
+        }
+
+        .notification:hover {
+            transform: translateY(-2px);
+        }
+
+        .notification-icon {
+            width: 50px;
+            height: 50px;
+
+            border-radius: 50%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: linear-gradient(
+                45deg,
+                #ff0050,
+                #00f2ea
+            );
+
+            font-size: 22px;
+
+            margin-right: 14px;
+
+            flex-shrink: 0;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-message {
+            margin: 0 0 6px;
+
+            background: none;
+
+            padding: 0;
+
+            font-size: 16px;
+
+            line-height: 1.4;
+        }
+
+        .notification-status {
+            font-size: 13px;
+
+            color: #aaa;
         }
 
         .notification.unread {
-            border-left: 5px solid #2196f3;
+            border-left: 4px solid #00f2ea;
         }
 
         .notification.read {
-            opacity: 0.75;
+            opacity: 0.7;
         }
 
-        .message {
-            margin: 0 0 8px;
-            font-size: 16px;
+        .new-badge {
+            display: inline-block;
+
+            background: #00f2ea;
+
+            color: #000;
+
+            font-size: 11px;
+
+            font-weight: bold;
+
+            padding: 4px 8px;
+
+            border-radius: 10px;
+
+            margin-left: 6px;
         }
 
-        .status {
-            font-size: 13px;
-            color: #666;
-        }
-
-        .home-btn {
-            display: block;
+        .empty-notifications {
             text-align: center;
-            margin-bottom: 20px;
-            padding: 10px;
-            background: #2196f3;
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
+
+            background: #222;
+
+            padding: 35px 20px;
+
+            border-radius: 15px;
+
+            border: 1px solid #333;
         }
 
-        .empty {
-            text-align: center;
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
+        .empty-notifications .icon {
+            font-size: 45px;
+
+            margin-bottom: 10px;
         }
+
+        .back-button {
+            margin-top: 20px;
+        }
+
     </style>
+
 </head>
 
 <body>
 
 <div class="container">
 
-    <h1>🔔 Notifications</h1>
+    <div class="notifications-header">
 
-    <a class="home-btn" href="{{ url_for('home') }}">← Back to Home</a>
+        <h1>🔔 Notifications</h1>
+
+        <p>Stay updated with what's happening.</p>
+
+    </div>
+
 
     {% if notifications %}
 
         {% for notification in notifications %}
 
-            <div class="notification {% if notification.is_read %}read{% else %}unread{% endif %}">
+            <div
+                class="notification
+                {% if notification.is_read %}
+                    read
+                {% else %}
+                    unread
+                {% endif %}"
+            >
 
-                <p class="message">
-                    {{ notification.message }}
-                </p>
+                <div class="notification-icon">
+                    🔔
+                </div>
 
-                <div class="status">
-                    {% if notification.is_read %}
-                        ✓ Read
-                    {% else %}
-                        🟢 New
-                    {% endif %}
+
+                <div class="notification-content">
+
+                    <p class="notification-message">
+
+                        {{ notification.message }}
+
+                        {% if not notification.is_read %}
+
+                            <span class="new-badge">
+                                NEW
+                            </span>
+
+                        {% endif %}
+
+                    </p>
+
+
+                    <div class="notification-status">
+
+                        {% if notification.is_read %}
+
+                            ✓ Read
+
+                        {% else %}
+
+                            🟢 New
+
+                        {% endif %}
+
+                    </div>
+
                 </div>
 
             </div>
@@ -101,13 +211,37 @@
 
     {% else %}
 
-        <div class="empty">
-            <p>🔕 No notifications yet.</p>
+        <div class="empty-notifications">
+
+            <div class="icon">
+                🔕
+            </div>
+
+            <h2>No notifications</h2>
+
+            <p>
+                You don't have any notifications yet.
+            </p>
+
         </div>
 
     {% endif %}
 
+
+    <div class="back-button">
+
+        <a href="{{ url_for('home') }}">
+
+            <button type="button">
+                ← Back to Home
+            </button>
+
+        </a>
+
+    </div>
+
 </div>
 
 </body>
+
 </html>
