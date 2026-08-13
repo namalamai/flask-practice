@@ -118,9 +118,11 @@ def follow(user_id):
         )
         db.session.add(new_follow)
 
+        follower = User.query.get(follower_id)
+
         notification = Notification(
             user_id=user_id,
-            message="Someone started following you."
+            message=f"{follower.username} started following you."
         )
         db.session.add(notification)
 
