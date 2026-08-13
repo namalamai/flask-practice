@@ -266,6 +266,11 @@ def profile():
         user=user,
         picture=user.profile_picture
     )
+@app.route("/user/<int:user_id>")
+def public_profile(user_id):
+    user = User.query.get_or_404(user_id)
+    return render_template("public_profile.html", user=user)
+
 @app.route("/posts", methods=["GET", "POST"])
 def posts():
     if "user_id" not in session:
