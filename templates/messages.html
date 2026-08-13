@@ -30,6 +30,10 @@
                 {% endif %}
 
                 {{ message.content }}
+
+                <small class="message-time">
+                    {{ message.created_at.strftime("%H:%M") }}
+                </small>
             </div>
         {% else %}
             <p>No messages yet. Start the conversation!</p>
