@@ -30,12 +30,13 @@
     <a href="{{ url_for('dashboard') }}">
         <button>Back to Dashboard</button>
     </a>
+    <br><br>
+
+    <form action="{{ url_for('delete_account') }}" method="POST" onsubmit="return confirm('Are you sure you want to delete your account?');">
+        <button type="submit">Delete My Account</button>
+    </form>
+
 </div>
 
 </body>
 </html>
-<br><br>
-
-<form action="{{ url_for('delete_account') }}" method="POST" onsubmit="return confirm('Are you sure you want to delete your account?');">
-    <button type="submit">Delete My Account</button>
-</form>
