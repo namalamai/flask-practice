@@ -10,7 +10,12 @@
     <h1>📝 Post Details</h1>
 
     <div class="card">
-        <h3>👤 {{ post.user.username }}</h3>
+        <h3>
+    👤
+    <a href="{{ url_for('public_profile', user_id=post.user.id) }}">
+        {{ post.user.username }}
+    </a>
+</h3>
 
         <p>{{ post.content }}</p>
 
