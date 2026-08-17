@@ -282,6 +282,10 @@ def public_profile(user_id):
         user_id=user.id
     ).count()
 
+    user_posts = Post.query.filter_by(
+        user_id=user.id
+    ).order_by(Post.id.desc()).all()
+
     is_following = False
 
     if "user_id" in session:
@@ -296,6 +300,7 @@ def public_profile(user_id):
         followers_count=followers_count,
         following_count=following_count,
         posts_count=posts_count,
+        user_posts=user_posts,
         is_following=is_following
     )
 

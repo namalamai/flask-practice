@@ -97,6 +97,33 @@
 
     </div>
 
+    <div class="user-posts">
+        <h2>📝 Posts</h2>
+
+        {% if user_posts %}
+            {% for post in user_posts %}
+                <div class="post-card">
+                    <p>{{ post.content }}</p>
+
+                    {% if post.image %}
+                        <img
+                            src="{{ url_for('static', filename='uploads/' + post.image) }}"
+                            alt="Post image"
+                            class="post-image"
+                        >
+                    {% endif %}
+
+                    <p>
+                        ❤️ {{ post.likes|length }} likes
+                        • 💬 {{ post.comments|length }} comments
+                    </p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No posts yet.</p>
+        {% endif %}
+    </div>
+
     {% if session.get("user_id") != user.id %}
 
         <div class="profile-actions">
