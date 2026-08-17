@@ -340,6 +340,12 @@ def posts():
     return render_template("posts.html", posts=all_posts)
 
 
+@app.route("/post/<int:post_id>")
+def post_detail(post_id):
+    post = Post.query.get_or_404(post_id)
+    return render_template("post_detail.html", post=post)
+
+
 @app.route("/comment/<int:post_id>", methods=["POST"])
 def comment(post_id):
     if "user" not in session:

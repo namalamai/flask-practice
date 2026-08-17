@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ post.user.username }}'s Post</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <h1>📝 Post Details</h1>
+
+    <div class="card">
+        <h3>👤 {{ post.user.username }}</h3>
+
+        <p>{{ post.content }}</p>
+
+        {% if post.image %}
+            <img
+                src="{{ url_for('static', filename='uploads/' + post.image) }}"
+                alt="Post image"
+                style="width: 100%; max-height: 600px; object-fit: cover; border-radius: 12px; margin-top: 10px;"
+            >
+        {% endif %}
+
+        <form method="POST" action="{{ url_for('like_post', post_id=post.id) }}">
+            <button type="submit">
+                ❤️ Like
+            </button>
+        </form>
+
+        <p>
+            ❤️ Likes: {{ post.likes|length }}
+            💬 Comments: {{ post.comments|length }}
+        </p>
+
+        <form method="POST" action="{{ url_for('comment', post_id=post.id) }}">
+            <input
+                type="text"
+                name="comment"
+                placeholder="Add a comment..."
+                required
+            >
+            <button type="submit">💬 Comment</button>
+        </form>
+
+        <div>
+            {% for comment in post.comments %}
+                <div>
+                    <strong>{{ comment.user.username }}</strong>
+                    {{ comment.content }}
+                </div>
+            {% else %}
+                <p>No comments yet.</p>
+            {% endfor %}
+        </div>
+
+        <a class="back-button" href="{{ url_for('posts') }}">← Back to Posts</a>
+    </div>
+</div>
+
+</body>
+</html>

@@ -334,6 +334,15 @@
 
                 </div>
 
+                <!-- POST DETAILS -->
+                <div class="owner-actions">
+                    <a href="{{ url_for('post_detail', post_id=post.id) }}">
+                        <button type="button">
+                            🔎 View Details
+                        </button>
+                    </a>
+                </div>
+
                 <!-- OWNER CONTROLS -->
                 {% if post.user.id == session["user_id"] %}
 
